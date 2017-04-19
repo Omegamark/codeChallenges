@@ -28,32 +28,64 @@ function numToWords (num) {
   console.log('this is before', before);
   var after = intArray[1];
   console.log('this is after', after);
-  // Split the before and after strings and convert to words using reference arrays
   // Create reference arrays
   var ones = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-  var unique = ['eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
-  var tens = ['ten', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+  var unique = ['', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+  var tens = ['', 'ten', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
 
   // Split the before string(possibly reverse for the sake of map)
   var preDecimal = before.split('');
-  console.log(preDecimal);
+  console.log('This is preDecimal', preDecimal);
   // postDecimal needs to just add 'and xx/100' to the number
-  var postDecimal = "and " + after + "/100";
-  console.log(postDecimal);
+  var postDecimal = "and " + after + "/100 dollars";
+  console.log('this is postDecimal', postDecimal);
 
   // Get the length of the preDecimal number for reference in the map ie: 5 = 10,000 4 = 1,000 3 = 100 etc.
+  var numberLength = preDecimal.length;
+  console.log('this is number length', numberLength);
+
+  // Convert the preDecimal array from strings to numbers
+  var preDecimalNumbers = [];
+  preDecimal.forEach(function(index) {
+    preDecimalNumbers.push(parseInt(index));
+  });
+
+  console.log(preDecimalNumbers)
+  // Reverse preDecimalNumbers so that the 1s place is first
+  var reversedPreDecimalNumbers = [];
+  reversedPreDecimalNumbers = preDecimalNumbers.reverse();
+  console.log(reversedPreDecimalNumbers)
 
   // Do the regular ones first, then figure out the unique cases
 
-  // Loop through (using 'map') and convert the stringified numbers to words and concat
-  preDecimal.map(function(int) {
-    console.log('this is the map', int);
-  });
+  // Loop through (using 'map') and convert the stringified numbers to words
 
+  var reversedWordArray = [];
+  reversedPreDecimalNumbers.map(function(int) {
+    console.log(int);
+    // First find unique numbers
+    // Skip the ones place if the number is unique
+    // Convert ones place to words
+    if(reversedPreDecimalNumbers[0] > 0){
+    reversedWordArray.push(ones[int])
+    
+    } else if (reversedPreDecimalNumbers[1] > 0) {
+      reversedWordArray.push(tens[int])
+    } else if (reversedPreDecimalNumbers[2] > 0) {
+      reversedWordArray.push(ones[int] + ' hundred')
+    } else if (reversedPreDecimalNumbers[3] > 0) {
+      reversedWordArray.push(ones[int] + ' thousand')
+    }
+  });
+  console.log(reversedWordArray)
+
+  // Concatenate the preDecimal array
+
+  // Concatenate the preDecimal array with the postDecimal variable
 
   // Capitalize the first letter of the word string
 
-  console.log(intArray);
+
 }
 
 numToWords(test);
