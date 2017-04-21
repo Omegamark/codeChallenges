@@ -1,11 +1,3 @@
-// Write some code that will accept an amount and convert it to the
-// appropriate string representation.
-//
-// Example:
-// Convert 2523.04
-// to “Two thousand five hundred twenty-three and 04/100
-// dollars”
-
 // Expected output = “Two thousand five hundred twenty-three and 04/100
 
 var test = 2523.04
@@ -164,7 +156,7 @@ function numToWords (num) {
   // Correct the spaces in the string with a function
   var solution2 = solution.replace(/  +/g, ' ');
   // console.log('this is the ultimate solution:', solution2)
-  
+
   // Capitalize the first letter of the string
   var ultimateSolution = (function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
