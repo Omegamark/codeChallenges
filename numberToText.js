@@ -9,6 +9,15 @@
 // Expected output = “Two thousand five hundred twenty-three and 04/100
 
 var test = 2523.04
+var test2 = 2515.15
+var test3 = 13416.82
+var test4 = 10312.34
+var test5 = 20000.54
+var test6 = 33518.33
+var test7 = 315314.89
+var test8 = 13325312.90
+var test9 = 43245215.86
+var test10 = 103450.29
 var check = [];
 var intArray = [];
 
@@ -50,42 +59,115 @@ function numToWords (num) {
     preDecimalNumbers.push(parseInt(index));
   });
 
-  console.log(preDecimalNumbers)
+
   // Reverse preDecimalNumbers so that the 1s place is first
-  var reversedPreDecimalNumbers = [];
-  reversedPreDecimalNumbers = preDecimalNumbers.reverse();
-  console.log(reversedPreDecimalNumbers)
+  // This step may not be necessary. Not sure why I did this...
+  // var reversedPreDecimalNumbers = [];
+  // reversedPreDecimalNumbers = preDecimalNumbers.reverse();
+  // console.log(reversedPreDecimalNumbers)
 
   // Do the regular ones first, then figure out the unique cases
 
   // Loop through (using 'map') and convert the stringified numbers to words
 
   var reversedWordArray = [];
-  reversedPreDecimalNumbers.map(function(int) {
-    console.log(int);
+  // Make the reversedWordArray the same length as the reversedPreDecimalNumbers array.
+  reversedWordArray.length = preDecimalNumbers.length;
+  // Map the reversedWordArray to the reversedPreDecimalNumbers
+
+
+
     // First find unique numbers
     // Skip the ones place if the number is unique
     // Convert ones place to words
-    if(reversedPreDecimalNumbers[0] > 0){
-    reversedWordArray.push(ones[int])
-    
-    } else if (reversedPreDecimalNumbers[1] > 0) {
-      reversedWordArray.push(tens[int])
-    } else if (reversedPreDecimalNumbers[2] > 0) {
-      reversedWordArray.push(ones[int] + ' hundred')
-    } else if (reversedPreDecimalNumbers[3] > 0) {
-      reversedWordArray.push(ones[int] + ' thousand')
+    // figure out how to dynamically splice
+    console.log('this is preDecimalNumbers', preDecimalNumbers)
+    // if(preDecimalNumbers[index] === 0) {
+    //   reversedWordArray.splice('')
+    // }
+
+    // Tried a map, but now going to hard code up to a billion
+    // Create a variable to splice in reverse order rather than reverse the array
+    var endOfWordArray = reversedWordArray.length - 1;
+    // Create another variable for endOfIntArray
+    var endOfIntArray = preDecimalNumbers.length -1;
+
+
+    // Should really create a function for the places and reuse that rather than rewrite code
+
+    // If statement for ones & teens place
+    if(preDecimalNumbers[endOfIntArray] > 0 && preDecimalNumbers[endOfIntArray - 1] === 1){
+      reversedWordArray.splice(endOfWordArray, 1, unique[preDecimalNumbers[endOfIntArray]]);
+      reversedWordArray.splice(endOfWordArray - 1, 1);
+    } else {
+      reversedWordArray.splice(endOfWordArray, 1, ones[preDecimalNumbers[endOfIntArray]]);
     }
-  });
+
+
+    // If statement for 10s place
+    if (preDecimalNumbers[endOfWordArray - 1] > 1) {
+      reversedWordArray.splice(endOfWordArray - 1, 1, tens[preDecimalNumbers[endOfIntArray - 1]]);
+    }
+
+    // If statement for 100s place
+    if (preDecimalNumbers[endOfWordArray - 2] > 1) {
+      reversedWordArray.splice(endOfWordArray - 2, 1, ones[preDecimalNumbers[endOfIntArray - 2]] + ' hundred');
+    }
+
+    // If statement for 1000s, teen 1000s & 10,000s place
+   if(preDecimalNumbers[endOfIntArray - 3] > 0 && preDecimalNumbers[endOfIntArray - 4] === 1){
+      reversedWordArray.splice(endOfWordArray - 3, 1, unique[preDecimalNumbers[endOfIntArray - 3]] + ' thousand');
+      reversedWordArray.splice(endOfWordArray - 4, 1)
+    } else if (preDecimalNumbers[endOfIntArray - 4] > 0) {
+      reversedWordArray.splice(endOfWordArray - 4, 1, tens[preDecimalNumbers[endOfIntArray - 4]]);
+      reversedWordArray.splice(endOfWordArray - 3, 1, ones[preDecimalNumbers[endOfIntArray - 3]] + ' thousand')
+
+    } else {
+      reversedWordArray.splice(endOfWordArray - 3, 1, ones[preDecimalNumbers[endOfIntArray - 3]] + ' thousand');
+    }
+
+    // If statement for 100,000s place
+    if (preDecimalNumbers[endOfWordArray - 5] > 0) {
+      reversedWordArray.splice(endOfWordArray - 5, 1, ones[preDecimalNumbers[endOfIntArray - 5]] + ' hundred');
+    }
+
+    // If statement for tens, teens & 1,000,000s place
+    if(preDecimalNumbers[endOfIntArray - 6] > 0 && preDecimalNumbers[endOfIntArray - 7] === 1){
+      reversedWordArray.splice(endOfWordArray - 6, 1, unique[preDecimalNumbers[endOfIntArray - 6]] + ' million');
+      reversedWordArray.splice(endOfWordArray - 7, 1)
+    } else if (preDecimalNumbers[endOfIntArray - 7] > 0) {
+      reversedWordArray.splice(endOfWordArray - 7, 1, tens[preDecimalNumbers[endOfIntArray - 7]]);
+      reversedWordArray.splice(endOfWordArray - 6, 1, ones[preDecimalNumbers[endOfIntArray - 6]] + ' million')
+
+    }
+    // else {
+    //   reversedWordArray.splice(endOfWordArray - 6, 1, ones[preDecimalNumbers[endOfIntArray - 6]] + ' million');
+    // }
+
+
   console.log(reversedWordArray)
 
-  // Concatenate the preDecimal array
-
+  // Concatenate the reversedWordArray and add the cents
+  var concatArray = reversedWordArray.join(' ');
+  // console.log('this is the solution: ', concatArray)
   // Concatenate the preDecimal array with the postDecimal variable
+  var solution = concatArray + ' ' + postDecimal;
+  console.log('this is the solution: ', solution)
 
-  // Capitalize the first letter of the word string
+  // Correct the spaces in the string with a function
+  var solution2 = solution.replace(/  +/g, ' ');
+  console.log('this is the ultimate solution:', solution2)
+
+  // Capitalize the first letter of the string
+  (function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  })(solution2)
+
+
+
+
 
 
 }
 
-numToWords(test);
+numToWords(test5);
