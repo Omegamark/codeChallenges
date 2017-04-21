@@ -10,14 +10,21 @@
 
 var test = 2523.04
 var test2 = 2515.15
-var test3 = 13416.82
+var test3 = 13116.82
 var test4 = 10312.34
 var test5 = 20000.54
 var test6 = 33518.33
 var test7 = 315314.89
-var test8 = 13325312.90
-var test9 = 43245215.86
+var test8 = 13325322.90
+var test9 = 43215215.86
 var test10 = 103450.29
+var test11 = 912322173.50
+// Fringe cases
+var test12 = 1.50
+var test13 = 999999999.79 // This one works
+var test14 = 100.33
+var test15 = 13.56
+var test16 = .90
 var check = [];
 var intArray = [];
 
@@ -34,9 +41,9 @@ function numToWords (num) {
   // Begin converting numbers to word
   // Split the array indices into 2 variables
   var before = intArray[0];
-  console.log('this is before', before);
+  // console.log('this is before', before);
   var after = intArray[1];
-  console.log('this is after', after);
+  // console.log('this is after', after);
   // Create reference arrays
   var ones = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
   var unique = ['', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
@@ -44,14 +51,14 @@ function numToWords (num) {
 
   // Split the before string(possibly reverse for the sake of map)
   var preDecimal = before.split('');
-  console.log('This is preDecimal', preDecimal);
+  // console.log('This is preDecimal', preDecimal);
   // postDecimal needs to just add 'and xx/100' to the number
   var postDecimal = "and " + after + "/100 dollars";
-  console.log('this is postDecimal', postDecimal);
+  // console.log('this is postDecimal', postDecimal);
 
   // Get the length of the preDecimal number for reference in the map ie: 5 = 10,000 4 = 1,000 3 = 100 etc.
   var numberLength = preDecimal.length;
-  console.log('this is number length', numberLength);
+  // console.log('this is number length', numberLength);
 
   // Convert the preDecimal array from strings to numbers
   var preDecimalNumbers = [];
@@ -81,7 +88,7 @@ function numToWords (num) {
     // Skip the ones place if the number is unique
     // Convert ones place to words
     // figure out how to dynamically splice
-    console.log('this is preDecimalNumbers', preDecimalNumbers)
+    // console.log('this is preDecimalNumbers', preDecimalNumbers)
     // if(preDecimalNumbers[index] === 0) {
     //   reversedWordArray.splice('')
     // }
@@ -110,7 +117,7 @@ function numToWords (num) {
     }
 
     // If statement for 100s place
-    if (preDecimalNumbers[endOfWordArray - 2] > 1) {
+    if (preDecimalNumbers[endOfWordArray - 2] > 0) {
       reversedWordArray.splice(endOfWordArray - 2, 1, ones[preDecimalNumbers[endOfIntArray - 2]] + ' hundred');
     }
 
@@ -122,9 +129,8 @@ function numToWords (num) {
       reversedWordArray.splice(endOfWordArray - 4, 1, tens[preDecimalNumbers[endOfIntArray - 4]]);
       reversedWordArray.splice(endOfWordArray - 3, 1, ones[preDecimalNumbers[endOfIntArray - 3]] + ' thousand')
 
-    } else {
-      reversedWordArray.splice(endOfWordArray - 3, 1, ones[preDecimalNumbers[endOfIntArray - 3]] + ' thousand');
     }
+
 
     // If statement for 100,000s place
     if (preDecimalNumbers[endOfWordArray - 5] > 0) {
@@ -140,34 +146,45 @@ function numToWords (num) {
       reversedWordArray.splice(endOfWordArray - 6, 1, ones[preDecimalNumbers[endOfIntArray - 6]] + ' million')
 
     }
-    // else {
-    //   reversedWordArray.splice(endOfWordArray - 6, 1, ones[preDecimalNumbers[endOfIntArray - 6]] + ' million');
-    // }
+    // If statement for 100,000,000s place
+    if (preDecimalNumbers[endOfWordArray - 8] > 0) {
+      reversedWordArray.splice(endOfWordArray - 8, 1, ones[preDecimalNumbers[endOfIntArray - 8]] + ' hundred');
+    }
 
 
-  console.log(reversedWordArray)
+  // console.log(reversedWordArray)
 
   // Concatenate the reversedWordArray and add the cents
   var concatArray = reversedWordArray.join(' ');
   // console.log('this is the solution: ', concatArray)
   // Concatenate the preDecimal array with the postDecimal variable
   var solution = concatArray + ' ' + postDecimal;
-  console.log('this is the solution: ', solution)
+  // console.log('this is the solution: ', solution)
 
   // Correct the spaces in the string with a function
   var solution2 = solution.replace(/  +/g, ' ');
-  console.log('this is the ultimate solution:', solution2)
-
+  // console.log('this is the ultimate solution:', solution2)
+  
   // Capitalize the first letter of the string
-  (function capitalizeFirstLetter(string) {
+  var ultimateSolution = (function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
-  })(solution2)
+  })(solution2);
 
+  // Solve fringe case where there are no cents (actually no, I assume .00 will be used for 0 cents)
 
+  // Remove 'and' for cases where there is nothing before the decimal
+
+  if (before === '0') {
+    ultimateSolution = postDecimal.replace('and ', '');
+  }
+
+  return ultimateSolution;
+
+  console.log(ultimateSolution);
 
 
 
 
 }
 
-numToWords(test5);
+numToWords(test13);
