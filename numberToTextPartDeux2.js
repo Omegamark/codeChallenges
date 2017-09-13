@@ -1,13 +1,14 @@
 // This solution works up to 999,999,999 in it's current state.
+// Need to fix validation for 0
 var test13 = 999999999.79; // This one works
 var test16 = 0.9;
 var test1 = 1;
 var test2 = 1000000000;
 var test3 = 1.3345;
-var test4 = 100000000000000090;
+var test4 = 100000000000000;
 var test5 = "dkfajs;";
 var test6 = 0;
-
+console.log(test4.length);
 function numToWords(num) {
   // Instatiate variables
   // An array of integers created from the original number. Integers are in string form.
@@ -59,6 +60,7 @@ function numToWords(num) {
   var endOfIntArray;
   var beforeDecimal = 0;
   var afterDecimal;
+  var string;
   // Check that the thing passed is a number.
   validateInput();
   // Split the number on the decimal and generate preDecimal array and postDecimal variable.
@@ -131,8 +133,10 @@ function numToWords(num) {
     if (preDecimalNumbersArray[0] === 0) {
       ultimateSolution = "zero";
       return false;
-    } else if (preDecimalNumbersArray.length > 16) {
+    } else if (preDecimalNumbersArray.length > 15) {
       return false;
+    } else if (!postDecimal) {
+      return true;
     } else if (postDecimal.length > 2) {
       return false;
     } else {
@@ -176,9 +180,54 @@ function numToWords(num) {
       return thousands;
     }
 
-    console.log("CHUNKY!!!!!", chunk(23456098325));
-  }
+    console.log("CHUNKY!!!!!", chunk());
+    // **************
+    // translate a number from 1-999 into English
+    function inEnglish(number) {
+      var thousands,
+        hundreds,
+        tens,
+        ones,
+        words = [];
 
+      if (number < 20) {
+        return ONE_TO_NINETEEN[number - 1]; // may be undefined
+      }
+
+      if (number < 100) {
+        ones = number % 10;
+        tens = (number / 10) | 0; // equivalent to Math.floor(number / 10)
+
+        words.push(TENS[tens - 1]);
+        words.push(inEnglish(ones));
+
+        return words.filter(isTruthy).join("-");
+      }
+
+      hundreds = (number / 100) | 0;
+      words.push(inEnglish(hundreds));
+      words.push("hundred");
+      words.push(inEnglish(number % 100));
+
+      return words.filter(isTruthy).join(" ");
+    }
+    // append the word for a scale. Made for use with Array.map
+    function appendScale(chunk, exp) {
+      var scale;
+      if (!chunk) {
+        return null;
+      }
+      scale = SCALES[exp - 1];
+      return [chunk, scale].filter(isTruthy).join(" ");
+    }
+    string = chunk()
+      .map(inEnglish)
+      .map(appendScale)
+      .filter(isTruthy)
+      .reverse()
+      .join(" ");
+  }
+  console.log(string);
   return ultimateSolution;
 }
 

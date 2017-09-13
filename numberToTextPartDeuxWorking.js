@@ -274,4 +274,4 @@ function numToWords(num) {
   return ultimateSolution;
 }
 
-console.log(numToWords(test16));
+console.log(numToWords(test13));
