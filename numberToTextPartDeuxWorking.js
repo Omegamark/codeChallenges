@@ -6,12 +6,14 @@ var test2 = 1000000000;
 var test3 = 1.3345;
 var test4 = 100000000000000090;
 var test5 = "dkfajs;";
+var test6 = 0;
 
 function numToWords(num) {
   // Instatiate variables
   // An array of integers created from the original number. Integers are in string form.
   var intArray = [];
-  var checkInput, checkNumber;
+  var checkInput;
+  var checkNumber;
   // Word arrays to correspond with numbers.
   const ones = [
     "",
@@ -52,6 +54,8 @@ function numToWords(num) {
   const bigNums = ["hundred", "thousand", "million", "billion", "trillion"];
 
   var preDecimalNumbersArray = [];
+  var beforeDecimal;
+  var preDecimal;
   var postDecimal = "";
   var ultimateSolution = "";
   var wordArray = [];
@@ -66,9 +70,10 @@ function numToWords(num) {
   console.log("fjdkslaf;", checkNumber);
   console.log("this is pre", preDecimal);
   console.log("this is post", postDecimal);
-
+  // Make the 2 arrays identical for correspondance.
   wordArray.length = preDecimalNumbersArray.length;
   console.log("this is word Array", wordArray);
+
   endOfWordArray = wordArray.length - 1;
   endOfIntArray = preDecimalNumbersArray.length - 1;
   console.log("this is endOfIntArray", endOfIntArray);
@@ -77,7 +82,7 @@ function numToWords(num) {
     // Creating a variable to represent the end of the word array for use with if statments.
     createWordArray();
     // Concatenate the word array, normalize and return solution
-    // fixSolution();
+    fixSolution();
   } else {
     console.log(
       "The input is outside of this function's constraints. It is either more than 1 trillion, more than 2 numbers were entered for change, or it is not a number."
@@ -96,7 +101,7 @@ function numToWords(num) {
     // Stringify the number so string methods can be applied and split on the number's decimal then split the preDecimal number into an integer array.
     intArray = num.toString().split(".");
 
-    let beforeDecimal = intArray[0];
+    beforeDecimal = intArray[0];
     let afterDecimal = intArray[1];
     console.log("this is before decimal", beforeDecimal);
 
@@ -122,8 +127,11 @@ function numToWords(num) {
   }
   // Function to validate that the number passed is a number and a valid dollar amount.
   function validateNumber() {
-    // Check to be sure that the number is less than one billion.
-    if (preDecimalNumbersArray.length > 16) {
+    // Check to be sure that the number is less than one billion or zero.
+    if (preDecimalNumbersArray[0] === 0 && postDecimal == null) {
+      ultimateSolution = "zero";
+      return false;
+    } else if (preDecimalNumbersArray.length > 16) {
       return false;
     } else if (postDecimal.length > 2) {
       return false;
@@ -145,17 +153,125 @@ function numToWords(num) {
     let preliminarySolution2 = preliminarySolution1.replace(/  +/g, " ");
 
     // Capitalize the first letter of the string
-    ultimateSolution = (function capitalizeFirstLetter(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    })(preliminarySolution2);
+    if (beforeDecimal != "0") {
+      ultimateSolution = (function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      })(preliminarySolution2);
+    } else if (beforeDecimal === "0") {
+      // remove the and if the integer is 0.
+      ultimateSolution = preliminarySolution2.replace(/ and /g, "");
+      console.log("ULTIMATESOLUTION", ultimateSolution);
+      // ultimateSolution = postDecimal.replace(/" and "/, "");
+    }
   }
 
   // Function to create an array of words.
   function createWordArray() {
-    console.log("hello from create word", preDecimal);
+    // If statement for ones & teens place
+    if (
+      preDecimalNumbersArray[endOfIntArray] > 0 &&
+      preDecimalNumbersArray[endOfIntArray - 1] === 1
+    ) {
+      wordArray.splice(
+        endOfWordArray,
+        1,
+        unique[preDecimalNumbersArray[endOfIntArray]]
+      );
+      wordArray.splice(endOfWordArray - 1, 1);
+    } else {
+      wordArray.splice(
+        endOfWordArray,
+        1,
+        ones[preDecimalNumbersArray[endOfIntArray]]
+      );
+    }
+
+    // If statement for 10s place
+    if (preDecimalNumbersArray[endOfWordArray - 1] > 1) {
+      wordArray.splice(
+        endOfWordArray - 1,
+        1,
+        tens[preDecimalNumbersArray[endOfIntArray - 1]]
+      );
+    }
+
+    // If statement for 100s place
+    if (preDecimalNumbersArray[endOfWordArray - 2] > 0) {
+      wordArray.splice(
+        endOfWordArray - 2,
+        1,
+        ones[preDecimalNumbersArray[endOfIntArray - 2]] + " hundred"
+      );
+    }
+
+    // If statement for 1000s, teen 1000s & 10,000s place
+    if (
+      preDecimalNumbersArray[endOfIntArray - 3] > 0 &&
+      preDecimalNumbersArray[endOfIntArray - 4] === 1
+    ) {
+      wordArray.splice(
+        endOfWordArray - 3,
+        1,
+        unique[preDecimalNumbersArray[endOfIntArray - 3]] + " thousand"
+      );
+      wordArray.splice(endOfWordArray - 4, 1);
+    } else if (preDecimalNumbersArray[endOfIntArray - 4] > 0) {
+      wordArray.splice(
+        endOfWordArray - 4,
+        1,
+        tens[preDecimalNumbersArray[endOfIntArray - 4]]
+      );
+      wordArray.splice(
+        endOfWordArray - 3,
+        1,
+        ones[preDecimalNumbersArray[endOfIntArray - 3]] + " thousand"
+      );
+    }
+
+    // If statement for 100,000s place
+    if (preDecimalNumbersArray[endOfWordArray - 5] > 0) {
+      wordArray.splice(
+        endOfWordArray - 5,
+        1,
+        ones[preDecimalNumbersArray[endOfIntArray - 5]] + " hundred"
+      );
+    }
+
+    // If statement for tens, teens & 1,000,000s place
+    if (
+      preDecimalNumbersArray[endOfIntArray - 6] > 0 &&
+      preDecimalNumbersArray[endOfIntArray - 7] === 1
+    ) {
+      wordArray.splice(
+        endOfWordArray - 6,
+        1,
+        unique[preDecimalNumbersArray[endOfIntArray - 6]] + " million"
+      );
+      wordArray.splice(endOfWordArray - 7, 1);
+    } else if (preDecimalNumbersArray[endOfIntArray - 7] > 0) {
+      wordArray.splice(
+        endOfWordArray - 7,
+        1,
+        tens[preDecimalNumbersArray[endOfIntArray - 7]]
+      );
+      wordArray.splice(
+        endOfWordArray - 6,
+        1,
+        ones[preDecimalNumbersArray[endOfIntArray - 6]] + " million"
+      );
+    }
+
+    // If statement for 100,000,000s place
+    if (preDecimalNumbersArray[endOfWordArray - 8] > 0) {
+      wordArray.splice(
+        endOfWordArray - 8,
+        1,
+        ones[preDecimalNumbersArray[endOfIntArray - 8]] + " hundred"
+      );
+    }
   }
 
   return ultimateSolution;
 }
 
-console.log(numToWords(test13));
+console.log(numToWords(test16));
