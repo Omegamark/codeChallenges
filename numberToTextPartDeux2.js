@@ -9,6 +9,7 @@ var test4 = 100000000000000;
 var test5 = "dkfajs;";
 var test6 = 0;
 var testTristan = 1486354244.9;
+var testTirso = 3000000000;
 console.log(test4.length);
 function numToWords(num) {
   // Instatiate variables
@@ -138,7 +139,7 @@ function numToWords(num) {
       return false;
     } else if (!postDecimal) {
       return true;
-    } else if ((postDecimal.length = 1)) {
+    } else if (postDecimal.length === 1) {
       postDecimal *= 10;
       return true;
     } else {
@@ -230,8 +231,9 @@ function numToWords(num) {
       .join(" ");
   }
   console.log(string);
+  // add if statement for no coinage case.
   ultimateSolution = string + " and " + postDecimal + "/100 dollars";
   return ultimateSolution;
 }
 
-console.log(numToWords(testTristan));
+console.log(numToWords(testTirso));
