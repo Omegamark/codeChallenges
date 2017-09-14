@@ -125,6 +125,7 @@ function numToWords(num) {
     if (num != parseFloat(num)) {
       console.log("please enter a valid dollar amount.");
       checkInput = false;
+      return;
     } else {
       checkInput = true;
     }
@@ -232,7 +233,10 @@ function numToWords(num) {
   }
   console.log(string);
   // add if statement for no coinage case.
-  if (postDecimal === undefined) {
+  console.log("WAHOOO!!!!", ultimateSolution);
+  if (ultimateSolution === "zero") {
+    return ultimateSolution;
+  } else if (postDecimal === undefined) {
     ultimateSolution = string;
     return ultimateSolution;
   } else {
@@ -242,4 +246,4 @@ function numToWords(num) {
   }
 }
 
-console.log(numToWords(testTirso));
+console.log(numToWords(test5));
