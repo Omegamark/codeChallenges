@@ -245,5 +245,5 @@ function numToWords(num) {
     return ultimateSolution;
   }
 }
-
+// ???? Take out unused functions and variables, there's a lot of extraneous code from a prior solution.
 console.log(numToWords(test5));
