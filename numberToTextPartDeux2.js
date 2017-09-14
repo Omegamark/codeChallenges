@@ -8,6 +8,7 @@ var test3 = 1.3345;
 var test4 = 100000000000000;
 var test5 = "dkfajs;";
 var test6 = 0;
+var testTristan = 1486354244.9;
 console.log(test4.length);
 function numToWords(num) {
   // Instatiate variables
@@ -87,7 +88,7 @@ function numToWords(num) {
     // fixSolution();
   } else {
     console.log(
-      "The input is outside of this function's constraints. It is either more than 1 trillion, more than 2 numbers were entered for change, or it is not a number."
+      "The input is outside of this function's constraints. It is either more than 1 trillion, more than 2 numbers were entered for coinage, or it is not a number."
     );
   }
 
@@ -137,8 +138,9 @@ function numToWords(num) {
       return false;
     } else if (!postDecimal) {
       return true;
-    } else if (postDecimal.length > 2) {
-      return false;
+    } else if ((postDecimal.length = 1)) {
+      postDecimal *= 10;
+      return true;
     } else {
       return true;
     }
@@ -228,7 +230,8 @@ function numToWords(num) {
       .join(" ");
   }
   console.log(string);
+  ultimateSolution = string + " and " + postDecimal + "/100 dollars";
   return ultimateSolution;
 }
 
-console.log(numToWords(test13));
+console.log(numToWords(testTristan));
