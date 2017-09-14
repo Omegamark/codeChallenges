@@ -232,8 +232,14 @@ function numToWords(num) {
   }
   console.log(string);
   // add if statement for no coinage case.
-  ultimateSolution = string + " and " + postDecimal + "/100 dollars";
-  return ultimateSolution;
+  if (postDecimal === undefined) {
+    ultimateSolution = string;
+    return ultimateSolution;
+  } else {
+    ultimateSolution = string + " and " + postDecimal + "/100 dollars";
+    console.log("ULTIMATE", ultimateSolution);
+    return ultimateSolution;
+  }
 }
 
 console.log(numToWords(testTirso));
