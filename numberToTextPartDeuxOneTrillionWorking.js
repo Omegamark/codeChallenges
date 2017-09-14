@@ -66,13 +66,10 @@ function numToWords(num) {
   // Check that the thing passed is a number.
   validateInput();
   // Split the number on the decimal and generate preDecimal array and postDecimal variable.
-  splitOnDecimal();
+  if (checkInput === true) splitOnDecimal();
   // Validate that the entry is a number and valid dollar amount.
   console.log("CHECKINPUT", checkInput);
   if (checkInput === true) checkNumber = validateNumber();
-  console.log("fjdkslaf;", checkNumber);
-  console.log("this is pre", preDecimal);
-  console.log("this is post", postDecimal);
 
   wordArray.length = preDecimalNumbersArray.length;
   console.log("this is word Array", wordArray);
@@ -122,10 +119,10 @@ function numToWords(num) {
   // Function to check that the thing passed is a number.
 
   function validateInput() {
+    // ???? Function needs to kick out if this does not pass.
     if (num != parseFloat(num)) {
       console.log("please enter a valid dollar amount.");
       checkInput = false;
-      return;
     } else {
       checkInput = true;
     }
@@ -232,9 +229,12 @@ function numToWords(num) {
       .join(" ");
   }
   console.log(string);
-  // add if statement for no coinage case.
+  // ???? Create a function for this part and refactor. Have the console logs for bad inputs be returns instead when refactoring.
   console.log("WAHOOO!!!!", ultimateSolution);
-  if (ultimateSolution === "zero") {
+  if (checkInput === false) {
+    ultimateSolution = "Please enter a valid dollar amount.";
+    return ultimateSolution;
+  } else if (ultimateSolution === "zero") {
     return ultimateSolution;
   } else if (postDecimal === undefined) {
     ultimateSolution = string;
