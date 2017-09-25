@@ -15,6 +15,7 @@ function numToWords(num) {
   // Instatiate variables
   // An array of integers created from the original number. Integers are in string form.
   var intArray = [];
+  // Stores for boolean output from validation functions.
   var checkInput, checkNumber;
   var string;
   // Word arrays to correspond with numbers.
