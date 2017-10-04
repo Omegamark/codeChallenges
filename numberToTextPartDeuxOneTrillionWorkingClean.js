@@ -10,7 +10,6 @@ var test5 = "dkfajs;";
 var test6 = 0;
 var testTristan = 1486354244.9;
 var testTirso = 3000000000;
-console.log(test4.length);
 function numToWords(num) {
   // Instatiate variables
   // An array of integers created from the original number. Integers are in string form.
@@ -69,31 +68,20 @@ function numToWords(num) {
   // Split the number on the decimal and generate preDecimal array and postDecimal variable.
   if (checkInput === true) splitOnDecimal();
   // Validate that the entry is a number and valid dollar amount.
-  console.log("CHECKINPUT", checkInput);
   if (checkInput === true) checkNumber = validateNumber();
 
   wordArray.length = preDecimalNumbersArray.length;
-  console.log("this is word Array", wordArray);
   endOfWordArray = wordArray.length - 1;
   endOfIntArray = preDecimalNumbersArray.length - 1;
-  console.log("this is endOfIntArray", endOfIntArray);
-  // Generate an array of words after validation.
 
-  console.log("CHECKNUMBER", checkNumber);
   if (checkNumber === true) {
-    // Creating a variable to represent the end of the word array for use with if statments.
+    // Function to generate the word array, then concatenate into a string.
     createWordArray();
-    // Concatenate the word array, normalize and return solution
-    // fixSolution();
-  } else {
-    console.log(
-      "The input is outside of this function's constraints. It is either more than 1 trillion, more than 2 numbers were entered for coinage, or it is not a number."
-    );
+    // Concatenate the word array with ending represent cents.
+    // Make final validations and fixes before returning.
+    makeItSo();
   }
 
-  // Should really create a function for the places and reuse that rather than rewrite code
-
-  // if()
   // *** Functions ***
   // Function to split the number on the decimal and generate a preDecimal integer array and a postDecimal variable.
   function splitOnDecimal() {
@@ -105,11 +93,8 @@ function numToWords(num) {
 
     beforeDecimal = intArray[0];
     afterDecimal = intArray[1];
-    console.log("this is before decimal", beforeDecimal);
 
-    console.log("this is after", afterDecimal);
     preDecimal = beforeDecimal.split("");
-    console.log(preDecimal);
 
     postDecimal = afterDecimal;
 
@@ -145,25 +130,6 @@ function numToWords(num) {
       return true;
     }
   }
-  // Function to fix spacing in the solution.
-  function fixSolution() {
-    console.log(wordArray);
-    // Concatenate the wordArray and add the cents
-    let roughConcatenatedArray = wordArray.join(" ");
-
-    // Concatenate the preDecimal array with the postDecimal variable
-    let preliminarySolution1 =
-      roughConcatenatedArray + " and " + postDecimal + "/100 dollars";
-
-    // Correct the spaces in the string
-    let preliminarySolution2 = preliminarySolution1.replace(/  +/g, " ");
-
-    // Capitalize the first letter of the string
-    ultimateSolution = (function capitalizeFirstLetter(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    })(preliminarySolution2);
-  }
-  // Function to turn number into 3 digit chunks for reference.
 
   // Function to create an array of words.
   function createWordArray() {
@@ -171,6 +137,7 @@ function numToWords(num) {
     function isTruthy(item) {
       return !!item;
     }
+    // Function to turn number into 3 digit chunks for reference.
     function chunk(number) {
       (number = beforeDecimal), (thousands = []);
 
@@ -181,8 +148,6 @@ function numToWords(num) {
 
       return thousands;
     }
-
-    console.log("CHUNKY!!!!!", chunk());
     // **************
     // translate a number from 1-999 into English
     function inEnglish(number) {
@@ -220,6 +185,7 @@ function numToWords(num) {
         return null;
       }
       scale = SCALES[exp - 1];
+      // ***** LOOK UP HOW THIS FILTER IS WORKING USING AN THE PRECEDING ARRAY *****
       return [chunk, scale].filter(isTruthy).join(" ");
     }
     string = chunk()
@@ -229,22 +195,20 @@ function numToWords(num) {
       .reverse()
       .join(" ");
   }
-  console.log(string);
-  // ???? Create a function for this part and refactor. Have the console logs for bad inputs be returns instead when refactoring.
-  console.log("WAHOOO!!!!", ultimateSolution);
-  if (checkInput === false) {
-    ultimateSolution = "Please enter a valid dollar amount.";
-    return ultimateSolution;
-  } else if (ultimateSolution === "zero") {
-    return ultimateSolution;
-  } else if (postDecimal === undefined) {
-    ultimateSolution = string;
-    return ultimateSolution;
-  } else {
-    ultimateSolution = string + " and " + postDecimal + "/100 dollars";
-    console.log("ULTIMATE", ultimateSolution);
-    return ultimateSolution;
+  // Function to generate ultimateSolution for return.
+  function makeItSo() {
+    if (checkInput === false) {
+      ultimateSolution =
+        "The input is outside of this function's constraints. It is either more than 1 trillion, more than 2 numbers were entered for coinage, or it is not a number. Please input a valid Dollar amount!";
+    } else if (ultimateSolution === "zero") {
+      return ultimateSolution;
+    } else if (postDecimal === undefined) {
+      ultimateSolution = string;
+    } else {
+      ultimateSolution = string + " and " + postDecimal + "/100 dollars";
+    }
   }
+  return ultimateSolution;
 }
 // ???? Take out unused functions and variables, there's a lot of extraneous code from a prior solution.
-console.log(numToWords(test13));
+console.log(numToWords(testTristan));
